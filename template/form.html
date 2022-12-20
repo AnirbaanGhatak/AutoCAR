@@ -1,0 +1,35 @@
+<!-- <form action="{{ url_for("gfg")}}" method="post"> -->
+<html>
+<head>
+    <title>Flask</title>  
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+<body>
+    <center >
+<img src="../static/logo.png" alt="logo" >    
+</center>
+<h1 >CAR Generator</h1>
+<form action = "/success" method = "post" enctype="multipart/form-data">
+<label for="salary">Enter Salary:</label>
+<input type="number" name="csalary">
+<br>
+<br>
+<label for="salary">Enter FilePath:</label>
+<input type="text" name="cfilepath">
+
+<!-- <input id="fileselector" type="file" onchange="browseResult(event)" webkitdirectory directory multiple="false" style="display:none" />
+<button onclick="getElementById('fileselector').click()">Browse</button> -->
+<!-- <input type="file" name="file"> -->
+<br>
+<br>
+<button type="submit">SUBMIT</button>
+</form>
+</body>
+<!-- <script>
+    function browseResult(e){
+  var fileselector = document.getElementById('fileselector');
+  console.log(fileselector.value);
+  
+}
+    </script> -->
+</html>
