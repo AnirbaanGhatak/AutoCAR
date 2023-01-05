@@ -13,7 +13,6 @@ pandas==1.5.2
 protobuf==4.21.12
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-pycryptodome==3.4.3
 pyparsing==3.0.9
 PyPDF2==3.0.1
 Pyrebase4==4.6.0
