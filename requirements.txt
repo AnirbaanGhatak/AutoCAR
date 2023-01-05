@@ -19,8 +19,6 @@ Pyrebase4==4.6.0
 python-dateutil==2.8.2
 python-jwt==2.0.1
 pytz==2022.7
-requests==2.11.1
-requests-toolbelt==0.7.0
 rsa==4.9
 six==1.16.0
 typing_extensions==4.4.0
