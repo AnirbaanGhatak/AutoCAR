@@ -574,9 +574,9 @@ def mainPY(sal,fp,fn):
     file=fp+"/"+fn
     pdfFileObj = open(file, 'rb')
     complete_String = ""
-    pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-    for i in range(pdfReader.numPages):
-        pageObj = pdfReader.getPage(i).extract_text()
+    pdfReader = PyPDF2.PdfReader(pdfFileObj)
+    for i in range(len(pdfReader.pages)):
+        pageObj = pdfReader.pages[i].extract_text()
         complete_String += pageObj
     '''RISK SCORE'''
     riskIndex = get_index(complete_String.find("Equifax Risk Score 3.1 "), "Equifax Risk Score 3.1 ")
