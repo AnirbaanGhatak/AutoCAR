@@ -96,8 +96,8 @@ def success():
         fname=request.form.get("cName")
 
         nameV=mainPY(salaryN,filepath,fname,f)
-        excelFile = open(f'os.getcwd()/{filename}.xlsx', 'rb')
-    return render_template("success.html", name = filepath, sal=salaryN,fileN=filename,excel = excelFile)  
+        excelFile = open(f'os.getcwd()/{nameV}.xlsx', 'rb')
+    return render_template("success.html", name = filepath, sal=salaryN,fileN=filename)  
 
 @app.route('/download')
 def download():
