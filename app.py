@@ -99,7 +99,7 @@ def success():
 
 #  Flask constructor
 def mainPY(sal,fp,fn,f):
-    print(os.getcwd)
+    print(os.getcwd())
     global recommendation_string
     recommendation_string=""
     
