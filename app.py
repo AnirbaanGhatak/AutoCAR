@@ -1,6 +1,6 @@
 # importing Flask and other modules
 from flask import Flask, session, render_template, request, redirect
-from pyrebase import pyrebase
+import pyrebase
 
 
 from distutils.log import debug
@@ -13,29 +13,20 @@ import re
 import os
 
 
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
-from firebase import firebase
 
-# cred = credentials.Certificate("mlbcar-firebase-adminsdk-3xz4b-4d5da28ed7.json")
-# default_app = firebase_admin.initialize_app(cred)
-# db = firestore.client()
-# firebase_admin.initialize_app(cred)
-# firebase = firebase.FirebaseApplication('https://mlbcar-default-rtdb.firebaseio.com/', None)
 
 
 
 app = Flask(__name__,template_folder='template')
 
 config = {
-    "apiKey": "AIzaSyCGM6gGBkT4KlyOiuHQi6OvvBC1TXNHzcI",
-    "authDomain": "autocar-9fc07.firebaseapp.com",
-    "projectId": "autocar-9fc07",
-    "storageBucket": "autocar-9fc07.appspot.com",
-    "messagingSenderId": "751233560120",
-    "appId": "1:751233560120:web:53b127ffd2f468aaeb80cd",
-    "measurementId": "G-FDKLTMXK1P",
+    "apiKey": "AIzaSyAcXYU6xAppDYQxq3ALEbsKhH1yiJa6LWQ",
+    "authDomain": "autocar-14851.firebaseapp.com",
+    "projectId": "autocar-14851",
+    "storageBucket": "autocar-14851.appspot.com",
+    "messagingSenderId": "286521894271",
+    "appId": "1:286521894271:web:342b5457d9e4afa7b4264a",
+    "measurementId": "G-CGKE9Q27ZQ",
     "databaseURL": ""
 }
 
@@ -43,7 +34,7 @@ firebase = pyrebase.initialize_app(config)
 
 auth = firebase.auth()
 
-app.secret_key = "hmmm"
+app.secret_key = "Me_no_Tell"
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -69,32 +60,38 @@ def lg():
 @app.route('/logout')
 def lgout():
     session.pop('user')
-    return redirect('/')
+    return redirect("/")
+
+
 
 @app.route('/form', methods =["GET", "POST"])
 def gfg():
-    if request.method == "POST":
-        # getting input with name = fname in HTML form
-        salary = request.form.get("csalary")
-        # f = request.files['file']
-        filepath=request.form.get("cfilepath")
-        filename=request.form.get("cName")
-        return "Your salary is "+ salary
+    if('user' in session):
+        if request.method == "POST":
+            # getting input with name = fname in HTML form
+            salary = request.form.get("csalary")
+            # f = request.files['file']
+            filepath=request.form.get("cfilepath")
+            filename=request.form.get("cName")
+            return "Your salary is "+ salary
 
-        # first_name = request.form.get("fname")
-        # # getting input with name = lname in HTML form
-        # last_name = request.form.get("lname")
-        # return "Your name is "+first_name + last_name
-        
-    return render_template("form.html")
+            # first_name = request.form.get("fname")
+            # # getting input with name = lname in HTML form
+            # last_name = request.form.get("lname")
+            # return "Your name is "+first_name + last_name
+            
+        return render_template("form.html")
+    else:
+        return redirect('/')
+
 
 @app.route('/success', methods = ['POST'])  
 def success():  
     if request.method == 'POST':  
         
         salaryN = request.form.get("csalary")
-        f = request.files['file']
         filepath=request.form.get("cfilepath")
+        f = request.files['file']
         filename=request.form.get("cName")
 
         mainPY(salaryN,filepath,filename,f)
@@ -422,6 +419,7 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
+                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -441,6 +439,7 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
+                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -461,6 +460,7 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
+                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -480,12 +480,14 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
+                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
                         if(len(six_months)>0):
                             delinquencyString = delinquencyString[six_months[0]:(six_months[-1]+2)]
                             delinquenciesCount = (delinquencyString.count("+")+delinquencyString.count("CLSD")+delinquencyString.count("WOF")+delinquencyString.count("RCV"))
+            print(delinquencyString)
 
             '''OPEN'''
                 
@@ -520,6 +522,7 @@ def mainPY(sal,fp,fn,f):
             instiutionIndex = get_index(text.find('Institution : '),'Institution : ')
             instiutionName = text[instiutionIndex:(text.find('Past Due Amount'))].strip()
 
+            print(instiutionName,delinquenciesCount)
             '''Find Products of loan'''
             ProductsIndex = get_index(text.find('Type: '),'Type: ')
             ProductsName = text[ProductsIndex:(text.find('Last Payment:'))].strip()
@@ -571,14 +574,13 @@ def mainPY(sal,fp,fn,f):
         return completeDF
 
     folder_loc = fp
-    print(folder_loc)
+    # print(folder_loc)
     # folder_loc = "/Users/nilaygaitonde/Downloads"
     # Create a list of all files in the folder
     # Create a list of all files with .pdf extension
     # file=fp+"/"+fn
     # pdfFileObj = open(f, 'rb')
     complete_String = ""
-    # pdfReader = PyPDF2.PdfReader(pdfFileObj)
     pdfReader = PyPDF2.PdfReader(f)
     for i in range(len(pdfReader.pages)):
         pageObj = pdfReader.pages[i].extract_text()
