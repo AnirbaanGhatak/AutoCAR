@@ -96,7 +96,7 @@ def success():
         fname=request.form.get("cName")
 
         nameV=mainPY(salaryN,filepath,fname,f)
-    return render_template("success.html", name = filepath, sal=salaryN,fileN=filename)  
+    return render_template("success.html", name = filepath, sal=salaryN,fileN=nameV)  
 
 @app.route('/download')
 def download():
