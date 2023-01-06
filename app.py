@@ -1,5 +1,5 @@
 # importing Flask and other modules
-from flask import Flask, session, render_template, request, redirect
+from flask import Flask, session, render_template, request, redirect, send_file
 import pyrebase
 
 
@@ -87,16 +87,23 @@ def gfg():
 
 @app.route('/success', methods = ['POST'])  
 def success():  
-    if request.method == 'POST':  
-        
+    global nameV
+    if request.method == 'POST':
+
         salaryN = request.form.get("csalary")
         filepath=request.form.get("cfilepath")
-        f = request.files['file']
-        filename=request.form.get("cName")
+        f=request.files["file"]
+        fname=request.form.get("cName")
 
-        mainPY(salaryN,filepath,filename,f)
-    return render_template("success.html", name = filepath, sal=salaryN,fileN=filename)  
+        nameV=mainPY(salaryN,filepath,fname,f)
+        excelFile = open(f'os.getcwd()/{filename}.xlsx', 'rb')
+    return render_template("success.html", name = filepath, sal=salaryN,fileN=filename,excel = excelFile)  
 
+@app.route('/download')
+def download():
+    path=f'{os.getcwd()}/static/excel/{nameV}_CAR.xlsx'
+
+    return send_file(path, as_attachment=True)
 #  Flask constructor
 def mainPY(sal,fp,fn,f):
     print(os.getcwd())
@@ -358,7 +365,7 @@ def mainPY(sal,fp,fn,f):
                 os.mkdir(f'{filePath}/excel')
             except FileExistsError:
                 pass'''
-            with pd.ExcelWriter(f'{os.getcwd()}/{filename}_CAR.xlsx') as writer:
+            with pd.ExcelWriter(f'{os.getcwd()}/static/excel{filename}_CAR.xlsx') as writer:
                 data_df.to_excel(writer,sheet_name='All data',index=False)
                 pivot_df.to_excel(writer,sheet_name='Pivot data',index=True)
                 info_df.to_excel(writer,sheet_name='Info',index=False)
