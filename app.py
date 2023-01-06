@@ -20,13 +20,13 @@ import os
 app = Flask(__name__,template_folder='template')
 
 config = {
-    "apiKey": "AIzaSyCGM6gGBkT4KlyOiuHQi6OvvBC1TXNHzcI",
-    "authDomain": "autocar-9fc07.firebaseapp.com",
-    "projectId": "autocar-9fc07",
-    "storageBucket": "autocar-9fc07.appspot.com",
-    "messagingSenderId": "751233560120",
-    "appId": "1:751233560120:web:53b127ffd2f468aaeb80cd",
-    "measurementId": "G-FDKLTMXK1P",
+    "apiKey": "AIzaSyAcXYU6xAppDYQxq3ALEbsKhH1yiJa6LWQ",
+    "authDomain": "autocar-14851.firebaseapp.com",
+    "projectId": "autocar-14851",
+    "storageBucket": "autocar-14851.appspot.com",
+    "messagingSenderId": "286521894271",
+    "appId": "1:286521894271:web:342b5457d9e4afa7b4264a",
+    "measurementId": "G-CGKE9Q27ZQ",
     "databaseURL": ""
 }
 
@@ -34,7 +34,7 @@ firebase = pyrebase.initialize_app(config)
 
 auth = firebase.auth()
 
-app.secret_key = "hmmm"
+app.secret_key = "Me_no_Tell"
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -60,24 +60,29 @@ def lg():
 @app.route('/logout')
 def lgout():
     session.pop('user')
-    return redirect('/')
+    return redirect("/")
+
+
 
 @app.route('/form', methods =["GET", "POST"])
 def gfg():
-    if request.method == "POST":
-        # getting input with name = fname in HTML form
-        salary = request.form.get("csalary")
-        f = request.files['file']
-        filepath=request.form.get("cfilepath")
-        fname=request.form.get("cName")
-        return "Your salary is "+ salary
+    if('user' in session):
+        if request.method == "POST":
+            # getting input with name = fname in HTML form
+            salary = request.form.get("csalary")
+            # f = request.files['file']
+            filepath=request.form.get("cfilepath")
+            filename=request.form.get("cName")
+            return "Your salary is "+ salary
 
-        # first_name = request.form.get("fname")
-        # # getting input with name = lname in HTML form
-        # last_name = request.form.get("lname")
-        # return "Your name is "+first_name + last_name
+            # first_name = request.form.get("fname")
+            # # getting input with name = lname in HTML form
+            # last_name = request.form.get("lname")
+            # return "Your name is "+first_name + last_name
 
-    return render_template("form.html")
+        return render_template("form.html")
+    else:
+        return redirect('/')
 
 @app.route('/success', methods = ['POST'])
 def success():

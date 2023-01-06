@@ -3,6 +3,7 @@
       <title>success</title>
       <link rel="stylesheet" href="../static/main.css">
    </head>
+
    <body>
 
     <center >
@@ -11,17 +12,27 @@
       <br>
       <div id="abc">
       <center>
-      <p style="color:green; font-weight: bold; ">Excel generated successfully! Check folder</p>
+      <p style="color:green; font-weight: bold; ">Excel generated successfully!</p>
       <p>File Name:{{fileN}}</p>
       <p>Salary: {{sal}}</p>
-      <div>
+
+      <a href="/download"><button onclick="hideB()" class='btn btn-default'>Download</button></a>
+
+      <div id="hiddenE" style="display:none;">
          <a href="https://finqy.github.io/Erev/">Click here to Generate CAR PDF</a>
       </div>
-      <a href="/download"><button class='btn btn-default'>Download</button></a>
-
 </html>
    </center>
 </div>
    </body>
-
+   <script>
+    function hideB() {
+  var x = document.getElementById("hiddenE");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 </html>
