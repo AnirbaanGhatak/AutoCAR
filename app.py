@@ -397,6 +397,7 @@ def mainPY(sal,fp,fn,f):
                     pass
                 else:
                     pass
+
     def create_loan(text:str):
         '''Creates a loan object from the text of the pdf file'''
         completeDF = {"Products":[],"Loan Institution":[],"date_opened":[],"Sanction/Credit Limit":[],"Balance":[],"EMI":[],"Paid Principle":[],"open":[],"Delinquencies":[]}
@@ -680,6 +681,7 @@ def mainPY(sal,fp,fn,f):
         rec_df = pd.DataFrame()
 
     save_as_csv(pivot_df= pivot_df,filename=nameValue,data_df=show_df,csv=False,info_df=pd.DataFrame(info_df),rec_df=rec_df,case_df = case_df,filePath=folder_loc,disposable = disposable)
+    return nameValue
     
 # A decorator used to tell the application
 # which URL is associated function
