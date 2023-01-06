@@ -1,5 +1,5 @@
 # importing Flask and other modules
-from flask import Flask, session, render_template, request, redirect
+from flask import Flask, session, render_template, send_file, request, redirect
 from pyrebase import pyrebase
 
 
@@ -52,10 +52,10 @@ def lg():
 
         except:
             return render_template('login.html', un = "Error Please Check Your Credentials")
-            
+
 
     return render_template('login.html')
-            
+
 
 @app.route('/logout')
 def lgout():
@@ -67,34 +67,46 @@ def gfg():
     if request.method == "POST":
         # getting input with name = fname in HTML form
         salary = request.form.get("csalary")
-        # f = request.files['file']
+        f = request.files['file']
         filepath=request.form.get("cfilepath")
-        filename=request.form.get("cName")
+        fname=request.form.get("cName")
         return "Your salary is "+ salary
 
         # first_name = request.form.get("fname")
         # # getting input with name = lname in HTML form
         # last_name = request.form.get("lname")
         # return "Your name is "+first_name + last_name
-        
+
     return render_template("form.html")
 
-@app.route('/success', methods = ['POST'])  
-def success():  
-    if request.method == 'POST':  
-        
+@app.route('/success', methods = ['POST'])
+def success():
+    global nameV
+    if request.method == 'POST':
+
         salaryN = request.form.get("csalary")
         filepath=request.form.get("cfilepath")
-        filename=request.form.get("cName")
+        f=request.files["file"]
+        fname=request.form.get("cName")
 
-        mainPY(salaryN,filepath,filename)
-    return render_template("success.html", name = filepath, sal=salaryN,fileN=filename)  
+        nameV=mainPY(salaryN,filepath,fname,f)
+    return render_template("success.html", name = filepath, sal=salaryN,fileN=fname)
 
+
+# # Sending the file to the user
+@app.route('/download')
+def download():
+    path=f'{os.getcwd()}/mysite/AutoCAR/static/excel/{nameV}_CAR.xlsx'
+
+    return send_file(path, as_attachment=True)
+
+if __name__ == '__main__':
+   app.run() # running the flask app
 #  Flask constructor
-def mainPY(sal,fp,fn):
+def mainPY(sal,fp,fn,f):
     global recommendation_string
     recommendation_string=""
-    
+
     def rename_products(df:pd.DataFrame):
         df = df.reset_index()
         df['Products'] = df['Products'].map({
@@ -131,7 +143,7 @@ def mainPY(sal,fp,fn):
         var1 = 1 + (0.15/12)
         var2 = 0.15/12
         var3 = var1**60
-        
+
         value1 = (var3 - 1)*disposable
         value2 = var2*var3
         principal_amt = value1/value2
@@ -350,7 +362,7 @@ def mainPY(sal,fp,fn):
                 os.mkdir(f'{filePath}/excel')
             except FileExistsError:
                 pass'''
-            with pd.ExcelWriter(f'{filePath}/{filename}_CAR.xlsx') as writer:
+            with pd.ExcelWriter(f'{os.getcwd()}/mysite/AutoCAR/static/excel/{filename}_CAR.xlsx') as writer:
                 data_df.to_excel(writer,sheet_name='All data',index=False)
                 pivot_df.to_excel(writer,sheet_name='Pivot data',index=True)
                 info_df.to_excel(writer,sheet_name='Info',index=False)
@@ -483,7 +495,7 @@ def mainPY(sal,fp,fn):
             print(delinquencyString)
 
             '''OPEN'''
-                
+
             openIndex = get_index(text.find('Open: '),'Open: ')
             openValue = text[openIndex:(text.find("Date Reported: "))].strip()
 
@@ -519,7 +531,7 @@ def mainPY(sal,fp,fn):
             '''Find Products of loan'''
             ProductsIndex = get_index(text.find('Type: '),'Type: ')
             ProductsName = text[ProductsIndex:(text.find('Last Payment:'))].strip()
-            
+
             '''Find EMI'''
             EMIIndex = get_index(text.find('Monthly Payment Amount: '),'Monthly Payment Amount:')
             EMIValue = text[EMIIndex:(text.find('Credit Limit:'))-1]
@@ -531,7 +543,7 @@ def mainPY(sal,fp,fn):
                     EMIValue = int(EMIValue.replace(',',''))
                 except ValueError:
                     EMIValue = 0
-            
+
             if(ProductsName == 'Credit Card'):
                 creditIndex = get_index(text.find('Credit Limit:'),"Credit Limit: Rs. ")
                 creditLimit = text[creditIndex:text.find('Collateral Value')-1]
@@ -567,16 +579,16 @@ def mainPY(sal,fp,fn):
         return completeDF
 
     folder_loc = fp
-    print(folder_loc)
-    # folder_loc = "/Users/nilaygaitonde/Downloads"
-    # Create a list of all files in the folder
-    # Create a list of all files with .pdf extension
-    file=fp+"/"+fn
-    pdfFileObj = open(file, 'rb')
+    # print(folder_loc)
+    # # folder_loc = "/Users/nilaygaitonde/Downloads"
+    # # Create a list of all files in the folder
+    # # Create a list of all files with .pdf extension
+    # file=fp+"/"+fn
+    # pdfFileObj = open(file, 'rb')
     complete_String = ""
-    pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-    for i in range(pdfReader.numPages):
-        pageObj = pdfReader.getPage(i).extract_text()
+    pdfReader = PyPDF2.PdfReader(f)
+    for i in range(len(pdfReader.pages)):
+        pageObj = pdfReader.pages[i].extract_text()
         complete_String += pageObj
     '''RISK SCORE'''
     riskIndex = get_index(complete_String.find("Equifax Risk Score 3.1 "), "Equifax Risk Score 3.1 ")
@@ -666,7 +678,7 @@ def mainPY(sal,fp,fn):
         rec_df = pd.DataFrame()
 
     save_as_csv(pivot_df= pivot_df,filename=nameValue,data_df=show_df,csv=False,info_df=pd.DataFrame(info_df),rec_df=rec_df,case_df = case_df,filePath=folder_loc,disposable = disposable)
-    
+    return nameValue
 # A decorator used to tell the application
 # which URL is associated function
 
