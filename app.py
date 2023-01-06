@@ -13,7 +13,16 @@ import re
 import os
 
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+from firebase import firebase
 
+# cred = credentials.Certificate("mlbcar-firebase-adminsdk-3xz4b-4d5da28ed7.json")
+# default_app = firebase_admin.initialize_app(cred)
+# db = firestore.client()
+# firebase_admin.initialize_app(cred)
+# firebase = firebase.FirebaseApplication('https://mlbcar-default-rtdb.firebaseio.com/', None)
 
 
 
@@ -84,14 +93,15 @@ def success():
     if request.method == 'POST':  
         
         salaryN = request.form.get("csalary")
+        f = request.files['file']
         filepath=request.form.get("cfilepath")
         filename=request.form.get("cName")
 
-        mainPY(salaryN,filepath,filename)
+        mainPY(salaryN,filepath,filename,f)
     return render_template("success.html", name = filepath, sal=salaryN,fileN=filename)  
 
 #  Flask constructor
-def mainPY(sal,fp,fn):
+def mainPY(sal,fp,fn,f):
     global recommendation_string
     recommendation_string=""
     
@@ -412,7 +422,6 @@ def mainPY(sal,fp,fn):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -432,7 +441,6 @@ def mainPY(sal,fp,fn):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -453,7 +461,6 @@ def mainPY(sal,fp,fn):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -473,14 +480,12 @@ def mainPY(sal,fp,fn):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
                         if(len(six_months)>0):
                             delinquencyString = delinquencyString[six_months[0]:(six_months[-1]+2)]
                             delinquenciesCount = (delinquencyString.count("+")+delinquencyString.count("CLSD")+delinquencyString.count("WOF")+delinquencyString.count("RCV"))
-            print(delinquencyString)
 
             '''OPEN'''
                 
@@ -515,7 +520,6 @@ def mainPY(sal,fp,fn):
             instiutionIndex = get_index(text.find('Institution : '),'Institution : ')
             instiutionName = text[instiutionIndex:(text.find('Past Due Amount'))].strip()
 
-            print(instiutionName,delinquenciesCount)
             '''Find Products of loan'''
             ProductsIndex = get_index(text.find('Type: '),'Type: ')
             ProductsName = text[ProductsIndex:(text.find('Last Payment:'))].strip()
@@ -571,10 +575,11 @@ def mainPY(sal,fp,fn):
     # folder_loc = "/Users/nilaygaitonde/Downloads"
     # Create a list of all files in the folder
     # Create a list of all files with .pdf extension
-    file=fp+"/"+fn
-    pdfFileObj = open(file, 'rb')
+    # file=fp+"/"+fn
+    # pdfFileObj = open(f, 'rb')
     complete_String = ""
-    pdfReader = PyPDF2.PdfReader(pdfFileObj)
+    # pdfReader = PyPDF2.PdfReader(pdfFileObj)
+    pdfReader = PyPDF2.PdfReader(f)
     for i in range(len(pdfReader.pages)):
         pageObj = pdfReader.pages[i].extract_text()
         complete_String += pageObj
