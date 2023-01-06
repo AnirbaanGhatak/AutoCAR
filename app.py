@@ -365,7 +365,7 @@ def mainPY(sal,fp,fn,f):
                 os.mkdir(f'{filePath}/excel')
             except FileExistsError:
                 pass'''
-            with pd.ExcelWriter(f'{os.getcwd()}/static/excel{filename}_CAR.xlsx') as writer:
+            with pd.ExcelWriter(f'{os.getcwd()}/static/excel/{filename}_CAR.xlsx') as writer:
                 data_df.to_excel(writer,sheet_name='All data',index=False)
                 pivot_df.to_excel(writer,sheet_name='Pivot data',index=True)
                 info_df.to_excel(writer,sheet_name='Info',index=False)
