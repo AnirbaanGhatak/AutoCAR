@@ -20,13 +20,13 @@ import os
 app = Flask(__name__,template_folder='template')
 
 config = {
-    "apiKey": "AIzaSyAcXYU6xAppDYQxq3ALEbsKhH1yiJa6LWQ",
-    "authDomain": "autocar-14851.firebaseapp.com",
-    "projectId": "autocar-14851",
-    "storageBucket": "autocar-14851.appspot.com",
-    "messagingSenderId": "286521894271",
-    "appId": "1:286521894271:web:342b5457d9e4afa7b4264a",
-    "measurementId": "G-CGKE9Q27ZQ",
+    "apiKey": "AIzaSyBR71-zFmGfYLUsW5EXD1Fxfzi2-EZGgiY",
+    "authDomain": "autocar-e57c3.firebaseapp.com",
+    "projectId": "autocar-e57c3",
+    "storageBucket": "autocar-e57c3.appspot.com",
+    "messagingSenderId": "666160657763",
+    "appId": "1:666160657763:web:ade7ca74bd856e6690cf56",
+    "measurementId": "G-CV0X1E72YT",
     "databaseURL": ""
 }
 
