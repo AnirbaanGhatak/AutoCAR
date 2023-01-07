@@ -86,7 +86,6 @@ def gfg():
 
 @app.route('/success', methods = ['POST'])
 def success():
-    global nameV
     if request.method == 'POST':
 
         salaryN = request.form.get("csalary")
@@ -95,13 +94,13 @@ def success():
         fname=request.form.get("cName")
 
         nameV=mainPY(salaryN,filepath,fname,f)
-    return render_template("success.html", name = filepath, sal=salaryN,fileN=fname)
+    return render_template("success.html", name = filepath, sal=salaryN,fileN=fname,dname=nameV)
 
 
 # # Sending the file to the user
-@app.route('/download')
-def download():
-    path=f'{os.getcwd()}/static/excel/{nameV}_CAR.xlsx'
+@app.route('/download/<dname>')
+def download(dname):
+    path=f'{os.getcwd()}/static/excel/{dname}_CAR.xlsx'
 
     return send_file(path, as_attachment=True)
 
