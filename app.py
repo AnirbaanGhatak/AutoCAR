@@ -85,15 +85,20 @@ def gfg():
 
 @app.route('/success', methods = ['POST'])
 def success():
-    if request.method == 'POST':
+    try:
+        if request.method == 'POST':
 
-        salaryN = request.form.get("csalary")
-        filepath=request.form.get("cfilepath")
-        f=request.files["file"]
-        fname=request.form.get("cName")
+            salaryN = request.form.get("csalary")
+            filepath=request.form.get("cfilepath")
+            f=request.files["file"]
+            fname=request.form.get("cName")
 
-        nameV=mainPY(salaryN,filepath,fname,f)
-    return render_template("success.html", name = filepath, sal=salaryN,fileN=fname,dname=nameV)
+            nameV=mainPY(salaryN,filepath,fname,f)
+            # app.logger.info('\nUser:%s\nGenerated-- %s \n',userName_log,nameV)
+
+        return render_template("success.html", name = filepath, sal=salaryN,fileN=fname,dname=nameV)
+    except:
+        return render_template("error.html",code=500)
 
 
 # # Sending the file to the user
