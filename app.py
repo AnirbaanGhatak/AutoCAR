@@ -98,7 +98,7 @@ def success():
 
         return render_template("success.html", name = filepath, sal=salaryN,fileN=fname,dname=nameV)
     except:
-        return render_template("error.html",code=500)
+        return render_template("Error.html",code=500)
 
 
 # # Sending the file to the user
