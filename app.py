@@ -101,7 +101,7 @@ def success():
 # # Sending the file to the user
 @app.route('/download')
 def download():
-    path=f'{os.getcwd()}/mysite/AutoCAR/static/excel/{nameV}_CAR.xlsx'
+    path=f'{os.getcwd()}/static/excel/{nameV}_CAR.xlsx'
 
     return send_file(path, as_attachment=True)
 
@@ -367,7 +367,7 @@ def mainPY(sal,fp,fn,f):
                 os.mkdir(f'{filePath}/excel')
             except FileExistsError:
                 pass'''
-            with pd.ExcelWriter(f'{os.getcwd()}/mysite/AutoCAR/static/excel/{filename}_CAR.xlsx') as writer:
+            with pd.ExcelWriter(f'{os.getcwd()}/static/excel/{filename}_CAR.xlsx') as writer:
                 data_df.to_excel(writer,sheet_name='All data',index=False)
                 pivot_df.to_excel(writer,sheet_name='Pivot data',index=True)
                 info_df.to_excel(writer,sheet_name='Info',index=False)
@@ -429,7 +429,6 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -449,7 +448,6 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -470,7 +468,6 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -490,14 +487,12 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
                         if(len(six_months)>0):
                             delinquencyString = delinquencyString[six_months[0]:(six_months[-1]+2)]
                             delinquenciesCount = (delinquencyString.count("+")+delinquencyString.count("CLSD")+delinquencyString.count("WOF")+delinquencyString.count("RCV"))
-            print(delinquencyString)
 
             '''OPEN'''
 
@@ -532,7 +527,6 @@ def mainPY(sal,fp,fn,f):
             instiutionIndex = get_index(text.find('Institution : '),'Institution : ')
             instiutionName = text[instiutionIndex:(text.find('Past Due Amount'))].strip()
 
-            print(instiutionName,delinquenciesCount)
             '''Find Products of loan'''
             ProductsIndex = get_index(text.find('Type: '),'Type: ')
             ProductsName = text[ProductsIndex:(text.find('Last Payment:'))].strip()
