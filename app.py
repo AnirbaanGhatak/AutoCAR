@@ -108,6 +108,13 @@ def download(dname):
 
     return send_file(path, as_attachment=True)
 
+@app.route('/delete/<dname>')
+def delete(dname):
+    path=f'{os.getcwd()}/static/excel/{dname}_CAR.xlsx'
+    os.remove(path)
+    return redirect('https://finqy.github.io/Erev/')
+
+
 if __name__ == '__main__':
    app.run() # running the flask app
 #  Flask constructor
