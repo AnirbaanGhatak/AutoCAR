@@ -4,7 +4,7 @@
     <title>Flask</title>
     <link rel="stylesheet" href="../static/main.css" />
   </head>
-  
+
   <body>
 
     <form action="/logout" class="lgbt">
@@ -19,12 +19,9 @@
       <input title="salary" type="number" name="csalary" />
       <br />
       <br />
-      <label for="salary">Enter Folder Path:</label>
-      <input title="filepath" type="text" name="cfilepath" style="width: 60%;"/>
-<br><br>
 
       <label for="fileName" >Select Equifax Report:</label>
-      <input type="file" id="mybttn" name= "file" onchange="updateFilename(this.value)"/>
+      <input type="file" id="mybttn" name="file" accept=".pdf" onchange="updateFilename(this.value)"/>
       <input type="text" id="filename" name="cName"style="opacity:0;"/>
 
       <!-- <input id="fileselector" type="file" onchange="browseResult(event)" webkitdirectory directory multiple="false" style="display:none" />
@@ -54,7 +51,7 @@
             console.log(file_name);
           document.getElementById('filename').value = file_name;
         }
-  
+
 
 </script>
 

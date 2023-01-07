@@ -14,14 +14,14 @@
     display: flex;
     height: 100vh;
   }
-  
+
   .main .image {
     position: relative;
     width: 50%;
     height: 100%;
     background: #c21313e3;
   }
-  
+
   .main .image img {
     margin-top: 35%;
     margin-left: 12%;
@@ -52,7 +52,7 @@
     display: inline-block;
     letter-spacing: 1px;
   }
-  
+
    .content span {
     font-size: 16px;
     margin-bottom: 5px;
@@ -61,15 +61,15 @@
     color: #000000db;
   }
   .content input[type="password"]{
-    border: 2px solid #c21313e3;  
-    outline: none; 
-    border-radius: 20px; 
+    border: 2px solid #c21313e3;
+    outline: none;
+    border-radius: 20px;
     padding: 5px;
     width: 80%;
   }
   .content input[type="text"]{
-    border: 2px solid #c21313e3;   
-    border-radius: 20px; 
+    border: 2px solid #c21313e3;
+    border-radius: 20px;
     outline: none;
     padding: 5px;
     width: 80%;
@@ -126,3 +126,5 @@
   /* display: inline; */
   text-align: left;
 }
+
+

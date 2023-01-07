@@ -1,6 +1,6 @@
 # importing Flask and other modules
-from flask import Flask, session, render_template, request, redirect, send_file
-import pyrebase
+from flask import Flask, session, render_template, send_file, request, redirect
+from pyrebase import pyrebase
 
 
 from distutils.log import debug
@@ -16,17 +16,16 @@ import os
 
 
 
-
 app = Flask(__name__,template_folder='template')
 
 config = {
-    "apiKey": "AIzaSyAcXYU6xAppDYQxq3ALEbsKhH1yiJa6LWQ",
-    "authDomain": "autocar-14851.firebaseapp.com",
-    "projectId": "autocar-14851",
-    "storageBucket": "autocar-14851.appspot.com",
-    "messagingSenderId": "286521894271",
-    "appId": "1:286521894271:web:342b5457d9e4afa7b4264a",
-    "measurementId": "G-CGKE9Q27ZQ",
+    "apiKey": "AIzaSyBR71-zFmGfYLUsW5EXD1Fxfzi2-EZGgiY",
+    "authDomain": "autocar-e57c3.firebaseapp.com",
+    "projectId": "autocar-e57c3",
+    "storageBucket": "autocar-e57c3.appspot.com",
+    "messagingSenderId": "666160657763",
+    "appId": "1:666160657763:web:ade7ca74bd856e6690cf56",
+    "measurementId": "G-CV0X1E72YT",
     "databaseURL": ""
 }
 
@@ -52,10 +51,10 @@ def lg():
 
         except:
             return render_template('login.html', un = "Error Please Check Your Credentials")
-            
+
 
     return render_template('login.html')
-            
+
 
 @app.route('/logout')
 def lgout():
@@ -79,36 +78,43 @@ def gfg():
             # # getting input with name = lname in HTML form
             # last_name = request.form.get("lname")
             # return "Your name is "+first_name + last_name
-            
+
         return render_template("form.html")
     else:
         return redirect('/')
 
+@app.route('/success', methods = ['POST'])
+def success():
+    try:
+        if request.method == 'POST':
 
-@app.route('/success', methods = ['POST'])  
-def success():  
-    global nameV
-    if request.method == 'POST':
+            salaryN = request.form.get("csalary")
+            filepath=request.form.get("cfilepath")
+            f=request.files["file"]
+            fname=request.form.get("cName")
 
-        salaryN = request.form.get("csalary")
-        filepath=request.form.get("cfilepath")
-        f=request.files["file"]
-        fname=request.form.get("cName")
+            nameV=mainPY(salaryN,filepath,fname,f)
+            # app.logger.info('\nUser:%s\nGenerated-- %s \n',userName_log,nameV)
 
-        nameV=mainPY(salaryN,filepath,fname,f)
-    return render_template("success.html", name = filepath, sal=salaryN,fileN=nameV)  
+        return render_template("success.html", name = filepath, sal=salaryN,fileN=fname,dname=nameV)
+    except:
+        return render_template("Error.html",code=500)
 
-@app.route('/download')
-def download():
-    path=f'{os.getcwd()}/static/excel/{nameV}_CAR.xlsx'
+
+# # Sending the file to the user
+@app.route('/download/<dname>')
+def download(dname):
+    path=f'{os.getcwd()}/static/excel/{dname}_CAR.xlsx'
 
     return send_file(path, as_attachment=True)
+
+if __name__ == '__main__':
+   app.run() # running the flask app
 #  Flask constructor
 def mainPY(sal,fp,fn,f):
-    print(os.getcwd())
     global recommendation_string
     recommendation_string=""
-    
+
     def rename_products(df:pd.DataFrame):
         df = df.reset_index()
         df['Products'] = df['Products'].map({
@@ -145,7 +151,7 @@ def mainPY(sal,fp,fn,f):
         var1 = 1 + (0.15/12)
         var2 = 0.15/12
         var3 = var1**60
-        
+
         value1 = (var3 - 1)*disposable
         value2 = var2*var3
         principal_amt = value1/value2
@@ -427,7 +433,6 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -447,7 +452,6 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -468,7 +472,6 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
@@ -488,17 +491,15 @@ def mainPY(sal,fp,fn,f):
                             except ValueError:
                                 pass
                             if(diff_month(today_date,input_month)<=7):
-                                print(input_month)
                                 six_months.append(indice)
                             else:
                                 pass
                         if(len(six_months)>0):
                             delinquencyString = delinquencyString[six_months[0]:(six_months[-1]+2)]
                             delinquenciesCount = (delinquencyString.count("+")+delinquencyString.count("CLSD")+delinquencyString.count("WOF")+delinquencyString.count("RCV"))
-            print(delinquencyString)
 
             '''OPEN'''
-                
+
             openIndex = get_index(text.find('Open: '),'Open: ')
             openValue = text[openIndex:(text.find("Date Reported: "))].strip()
 
@@ -530,11 +531,10 @@ def mainPY(sal,fp,fn,f):
             instiutionIndex = get_index(text.find('Institution : '),'Institution : ')
             instiutionName = text[instiutionIndex:(text.find('Past Due Amount'))].strip()
 
-            print(instiutionName,delinquenciesCount)
             '''Find Products of loan'''
             ProductsIndex = get_index(text.find('Type: '),'Type: ')
             ProductsName = text[ProductsIndex:(text.find('Last Payment:'))].strip()
-            
+
             '''Find EMI'''
             EMIIndex = get_index(text.find('Monthly Payment Amount: '),'Monthly Payment Amount:')
             EMIValue = text[EMIIndex:(text.find('Credit Limit:'))-1]
@@ -546,7 +546,7 @@ def mainPY(sal,fp,fn,f):
                     EMIValue = int(EMIValue.replace(',',''))
                 except ValueError:
                     EMIValue = 0
-            
+
             if(ProductsName == 'Credit Card'):
                 creditIndex = get_index(text.find('Credit Limit:'),"Credit Limit: Rs. ")
                 creditLimit = text[creditIndex:text.find('Collateral Value')-1]
@@ -583,11 +583,11 @@ def mainPY(sal,fp,fn,f):
 
     folder_loc = fp
     # print(folder_loc)
-    # folder_loc = "/Users/nilaygaitonde/Downloads"
-    # Create a list of all files in the folder
-    # Create a list of all files with .pdf extension
+    # # folder_loc = "/Users/nilaygaitonde/Downloads"
+    # # Create a list of all files in the folder
+    # # Create a list of all files with .pdf extension
     # file=fp+"/"+fn
-    # pdfFileObj = open(f, 'rb')
+    # pdfFileObj = open(file, 'rb')
     complete_String = ""
     pdfReader = PyPDF2.PdfReader(f)
     for i in range(len(pdfReader.pages)):
@@ -682,7 +682,6 @@ def mainPY(sal,fp,fn,f):
 
     save_as_csv(pivot_df= pivot_df,filename=nameValue,data_df=show_df,csv=False,info_df=pd.DataFrame(info_df),rec_df=rec_df,case_df = case_df,filePath=folder_loc,disposable = disposable)
     return nameValue
-    
 # A decorator used to tell the application
 # which URL is associated function
 
