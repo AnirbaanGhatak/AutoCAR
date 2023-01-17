@@ -504,7 +504,6 @@ def mainPY(sal,fp,fn,f):
                         if(len(six_months)>0):
                             delinquencyString = delinquencyString[six_months[0]:(six_months[-1]+2)]
                             delinquenciesCount = (delinquencyString.count("+")+delinquencyString.count("CLSD")+delinquencyString.count("WOF")+delinquencyString.count("RCV"))
-
             '''OPEN'''
 
             openIndex = get_index(text.find('Open: '),'Open: ')
@@ -542,6 +541,7 @@ def mainPY(sal,fp,fn,f):
             ProductsIndex = get_index(text.find('Type: '),'Type: ')
             ProductsName = text[ProductsIndex:(text.find('Last Payment:'))].strip()
 
+            print(ProductsName,delinquencyString)
             '''Find EMI'''
             EMIIndex = get_index(text.find('Monthly Payment Amount: '),'Monthly Payment Amount:')
             EMIValue = text[EMIIndex:(text.find('Credit Limit:'))-1]
@@ -600,6 +600,8 @@ def mainPY(sal,fp,fn,f):
     for i in range(len(pdfReader.pages)):
         pageObj = pdfReader.pages[i].extract_text()
         complete_String += pageObj
+    index = complete_String.find("Glossary")
+    complete_String = complete_String[:index]
     '''RISK SCORE'''
     riskIndex = get_index(complete_String.find("Equifax Risk Score 3.1 "), "Equifax Risk Score 3.1 ")
     riskValue = int(complete_String[riskIndex:(complete_String.find("1. "))].strip())
